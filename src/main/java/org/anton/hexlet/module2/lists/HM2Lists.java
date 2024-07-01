@@ -9,7 +9,6 @@ public class HM2Lists {
     //                                          Reverse Polish Notation, RPN                                        |
     //______________________________________________________________________________________________________________|
     //                                                 My Solution                                                  |
-    //                                                                                                              |
     public static int calcInPolishNotation(String expression) {
         int var1 = 0, var2 = 0, pos = 0, result = 0;
         ArrayList<String> signs = new ArrayList<>(Arrays.asList("+", "-", "*", "/"));
@@ -50,7 +49,6 @@ public class HM2Lists {
 
     //______________________________________________________________________________________________________________|
     //                                             Hexlet Solution                                                  |
-    //                                                                                                              |
     public static int HEXLET_calcInPolishNotation(String expression) {
         String[] values = expression.split(" ");
         var stack = new LinkedList<Integer>();
@@ -106,7 +104,6 @@ public class HM2Lists {
 
     //______________________________________________________________________________________________________________|
     //                                             Hexlet Solution                                                  |
-    //                                                                                                              |
     public static int HEXLET_getLongestLength(String str) {
         var sequence = new ArrayList<Character>();
         var maxLength = 0;
@@ -123,11 +120,11 @@ public class HM2Lists {
         }
         return maxLength;
     }
+
     //**************************************************************************************************************|
-    //                                              Summary Ranges                                               |
+    //                                                Summary Ranges                                                |
     //______________________________________________________________________________________________________________|
     //                                                 My Solution                                                  |
-
     public static List<String> summaryRanges(List<Integer> numbers) {
         int rangeCounter = 0;
         List<String> result = new ArrayList<>();
@@ -154,7 +151,6 @@ public class HM2Lists {
 
     //______________________________________________________________________________________________________________|
     //                                             Hexlet Solution                                                  |
-    //                                                                                                              |
     private static String getRangeOfSequence(List<Integer> sequence) {
         int first = sequence.get(0);
         int last = sequence.get(sequence.size() - 1);
@@ -165,14 +161,10 @@ public class HM2Lists {
         var size = numbers.size();
         var ranges = new ArrayList<String>();
         var sequence = new ArrayList<Integer>();
-
         for (int index = 0; index < size; index++) {
             int current = numbers.get(index);
-
             sequence.add(current);
-
             int nextIndex = index + 1;
-
             if (nextIndex == size || (current + 1 != numbers.get(nextIndex))) {
                 if (sequence.size() > 1) {
                     var range = getRangeOfSequence(sequence);
@@ -183,65 +175,30 @@ public class HM2Lists {
         }
         return ranges;
     }
+
+    //**************************************************************************************************************|
+    //                                                 Unique List                                                  |
+    //______________________________________________________________________________________________________________|
+    //                                                 My Solution                                                  |
+    public static List<String> removeDuplicates(List<String> list) {
+        List<String> result = new ArrayList<>();
+        for (String s : list) {
+            if (!result.contains(s)) result.add(s);
+        }
+        return result;
+    }
+
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    public static List<String> HEXLET_removeDuplicates(List<String> words) {
+        var uniqWords = new ArrayList<String>();
+
+        for (var word : words) {
+            if (!uniqWords.contains(word)) {
+                uniqWords.add(word);
+            }
+        }
+
+        return uniqWords;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
