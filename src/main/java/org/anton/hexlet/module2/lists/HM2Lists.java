@@ -123,6 +123,66 @@ public class HM2Lists {
         }
         return maxLength;
     }
+    //**************************************************************************************************************|
+    //                                              Summary Ranges                                               |
+    //______________________________________________________________________________________________________________|
+    //                                                 My Solution                                                  |
+
+    public static List<String> summaryRanges(List<Integer> numbers) {
+        int rangeCounter = 0;
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < numbers.size() - 1; i++) {
+            if (numbers.get(i) + 1 == numbers.get(i + 1)) {
+                String resultString = numbers.get(i).toString() + "->";
+                i = getSeqEnd(numbers, i);
+                resultString += numbers.get(i).toString();
+                result.add(rangeCounter, resultString);
+                rangeCounter++;
+            }
+        }
+        return result;
+    }
+
+    private static int getSeqEnd(List<Integer> numbers, int start) {
+        int result = start;
+        for (int i = start; i < numbers.size() - 1; i++) {
+            if (numbers.get(i) != numbers.get(i + 1) - 1) break;
+            else result++;
+        }
+        return result;
+    }
+
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    //                                                                                                              |
+    private static String getRangeOfSequence(List<Integer> sequence) {
+        int first = sequence.get(0);
+        int last = sequence.get(sequence.size() - 1);
+        return first + "->" + last;
+    }
+
+    public static List<String> HEXLET_summaryRanges(List<Integer> numbers) {
+        var size = numbers.size();
+        var ranges = new ArrayList<String>();
+        var sequence = new ArrayList<Integer>();
+
+        for (int index = 0; index < size; index++) {
+            int current = numbers.get(index);
+
+            sequence.add(current);
+
+            int nextIndex = index + 1;
+
+            if (nextIndex == size || (current + 1 != numbers.get(nextIndex))) {
+                if (sequence.size() > 1) {
+                    var range = getRangeOfSequence(sequence);
+                    ranges.add(range);
+                }
+                sequence.clear();
+            }
+        }
+        return ranges;
+    }
 }
 
 
