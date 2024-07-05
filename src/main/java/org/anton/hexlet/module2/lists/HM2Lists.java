@@ -1,6 +1,11 @@
 package org.anton.hexlet.module2.lists;
 
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 
@@ -103,7 +108,7 @@ public class HM2Lists {
     }
 
     //______________________________________________________________________________________________________________|
-    //                                             Hexlet Solution                                                  |
+    //                                              Hexlet Solution                                                 |
     public static int HEXLET_getLongestLength(String str) {
         var sequence = new ArrayList<Character>();
         var maxLength = 0;
@@ -150,7 +155,7 @@ public class HM2Lists {
     }
 
     //______________________________________________________________________________________________________________|
-    //                                             Hexlet Solution                                                  |
+    //                                              Hexlet Solution                                                 |
     private static String getRangeOfSequence(List<Integer> sequence) {
         int first = sequence.get(0);
         int last = sequence.get(sequence.size() - 1);
@@ -189,7 +194,7 @@ public class HM2Lists {
     }
 
     //______________________________________________________________________________________________________________|
-    //                                             Hexlet Solution                                                  |
+    //                                               Hexlet Solution                                                |
     public static List<String> HEXLET_removeDuplicates(List<String> words) {
         var uniqWords = new ArrayList<String>();
 
