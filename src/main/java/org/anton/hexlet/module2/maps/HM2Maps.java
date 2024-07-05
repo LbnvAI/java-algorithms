@@ -1,9 +1,6 @@
 package org.anton.hexlet.module2.maps;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class HM2Maps {
     //**************************************************************************************************************|
@@ -79,5 +76,42 @@ public class HM2Maps {
             result.add(k + "=" + v);
         });
         return String.join("&", result);
+    }
+
+    //**************************************************************************************************************|
+    //                                                  Library                                                     |
+    //______________________________________________________________________________________________________________|
+    //                                                 My Solution                                                  |
+    public static List<Map<String, String>> findWhere(List<Map<String, String>> library, Map<String, String> where) {
+        List<Map<String, String>> result = new ArrayList<>();
+        for (var current : library) {
+            if (checkBook(current, where)) result.add(current);
+        }
+        return result;
+    }
+
+    private static boolean checkBook(Map<String, String> book, Map<String, String> where) {
+        for (var current : where.entrySet()) {
+            if (!book.get(current.getKey()).equals(current.getValue())) return false;
+        }
+        return true;
+    }
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    public static List<Map<String, String>> HEXLET_findWhere(List<Map<String, String>> data, Map<String, String> items) {
+        var result = new ArrayList<Map<String, String>>();
+        for (var item: data) {
+            boolean find = true;
+            for (var entry: items.entrySet()) {
+                var itemValue = item.getOrDefault(entry.getKey(), "");
+                if (!itemValue.equals(entry.getValue())) {
+                    find = false;
+                }
+            }
+            if (find) {
+                result.add(item);
+            }
+        }
+        return result;
     }
 }
