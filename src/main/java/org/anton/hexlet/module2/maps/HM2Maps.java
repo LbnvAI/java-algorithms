@@ -1,11 +1,11 @@
 package org.anton.hexlet.module2.maps;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class HM2Maps {
-
     //**************************************************************************************************************|
     //                                                  Scrabble                                                    |
     //______________________________________________________________________________________________________________|
@@ -53,5 +53,31 @@ public class HM2Maps {
             chars.put(current, count + 1);
         }
         return chars;
+    }
+
+    //**************************************************************************************************************|
+    //                                                Query String                                                  |
+    //______________________________________________________________________________________________________________|
+    //                                                 My Solution                                                  |
+    public static String bqs(Map<String, String> params) {
+        StringBuilder queryStr = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            queryStr.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+        }
+        if (queryStr.isEmpty()) return "";
+        else {
+            queryStr.deleteCharAt(queryStr.length() - 1);
+            return queryStr.toString();
+        }
+    }
+
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    public static String HEXLET_bqs(Map<String, String> params) {
+        var result = new ArrayList<String>();
+        params.forEach((k, v) -> {
+            result.add(k + "=" + v);
+        });
+        return String.join("&", result);
     }
 }
