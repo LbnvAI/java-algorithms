@@ -96,13 +96,14 @@ public class HM2Maps {
         }
         return true;
     }
+
     //______________________________________________________________________________________________________________|
     //                                             Hexlet Solution                                                  |
     public static List<Map<String, String>> HEXLET_findWhere(List<Map<String, String>> data, Map<String, String> items) {
         var result = new ArrayList<Map<String, String>>();
-        for (var item: data) {
+        for (var item : data) {
             boolean find = true;
-            for (var entry: items.entrySet()) {
+            for (var entry : items.entrySet()) {
                 var itemValue = item.getOrDefault(entry.getKey(), "");
                 if (!itemValue.equals(entry.getValue())) {
                     find = false;
@@ -113,5 +114,31 @@ public class HM2Maps {
             }
         }
         return result;
+    }
+
+    //**************************************************************************************************************|
+    //                                             Difference Calculator                                            |
+    //______________________________________________________________________________________________________________|
+    //                                           My Solution same as Hexlet                                         |
+    public static Map<String, Object> genDiff(Map<String, Object> first, Map<String, Object> second) {
+        Set<String> keys = new TreeSet<>();
+        addToTreeSet(first, keys);
+        addToTreeSet(second, keys);
+        Map<String, Object> diff = new LinkedHashMap<>();
+        for (String key : keys) {
+            if (first.containsKey(key) && !second.containsKey(key)) diff.put(key, "deleted");
+            else if (!first.containsKey(key) && second.containsKey(key)) diff.put(key, "added");
+            else {
+                if (first.get(key).equals(second.get(key))) diff.put(key, "unchanged");
+                else diff.put(key, "changed");
+            }
+        }
+        return diff;
+    }
+
+    private static void addToTreeSet(Map<String, Object> map, Set<String> set) {
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            set.add(entry.getKey());
+        }
     }
 }
