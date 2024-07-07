@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class App {
     //**************************************************************************************************************|
@@ -24,5 +25,16 @@ public class App {
         var sortedBooks = new ArrayList<Book>(books);
         sortedBooks.sort(Comparator.comparingInt(fn::apply));
         return sortedBooks.get(0);
+    }
+
+    //**************************************************************************************************************|
+    //                                        Check strings in list by predicate                                    |
+    //______________________________________________________________________________________________________________|
+    //                                             My Solution same as Hexlet                                       |
+    public static boolean every(List<String> words, Predicate<String> pr) {
+        for (String word : words) {
+            if (!pr.test(word)) return false;
+        }
+        return true;
     }
 }
