@@ -65,4 +65,23 @@ public class App {
         });
         return result;
     }
+
+    //**************************************************************************************************************|
+    //                               Split list on two parts using lambda as a parameter                            |
+    //______________________________________________________________________________________________________________|
+    //                                          My Solution same as Hexlet                                          |
+    public static List<List<String>> partition(List<String> words, Predicate<String> pr) {
+        List<List<String>> result;
+        List<String> first = new ArrayList<>();
+        List<String> second = new ArrayList<>();
+        if (words.isEmpty()) return new ArrayList<>();
+        else result = new ArrayList<>();
+        words.forEach((item) -> {
+            if (pr.test(item)) first.add(item);
+            else second.add(item);
+        });
+        result.add(first);
+        result.add(second);
+        return result;
+    }
 }
