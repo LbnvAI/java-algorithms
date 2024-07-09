@@ -1,9 +1,10 @@
 package org.anton.hexlet.module2.functions;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class App {
+public class HM2Functions {
     //**************************************************************************************************************|
     //                                          Get Min Element In List Of Book                                     |
     //______________________________________________________________________________________________________________|
