@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.abs;
+
 public class HM2Streams {
     //**************************************************************************************************************|
     //                                           Get Map of same aged users                                         |
@@ -50,4 +52,27 @@ public class HM2Streams {
     private static boolean isEven(int num) {
         return num % 2 == 0;
     }
+
+    //**************************************************************************************************************|
+    //                                       Find index of nearest number in list                                   |
+    //______________________________________________________________________________________________________________|
+    //                                                 My Solution                                                  |
+    public static int findIndexOfNearest(List<Integer> numbers, int target) {
+        var differences = numbers.stream().map(number -> abs(number - target)).toList();
+        return differences.indexOf(differences.stream().sorted().findFirst().orElse(-1));
+    }
+
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    public static int HEXLET_findIndexOfNearest(List<Integer> numbers, int num) {
+        if (numbers.isEmpty()) {
+            return -1;
+        }
+        List<Integer> diffs = numbers.stream()
+                .map(element -> Math.abs(num - element))
+                .toList();
+        var minDiff = diffs.stream().mapToInt(Integer::intValue).min().getAsInt();
+        return diffs.indexOf(minDiff);
+    }
+
 }
