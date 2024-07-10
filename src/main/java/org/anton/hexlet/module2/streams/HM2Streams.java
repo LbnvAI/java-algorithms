@@ -1,5 +1,7 @@
 package org.anton.hexlet.module2.streams;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
@@ -73,22 +75,24 @@ public class HM2Streams {
         var minDiff = diffs.stream().mapToInt(Integer::intValue).min().getAsInt();
         return diffs.indexOf(minDiff);
     }
+
     //**************************************************************************************************************|
     //                                   Find anagrams of string in list of strings                                 |
     //______________________________________________________________________________________________________________|
     //                                                 My Solution                                                  |
-    public static List<String>filterAnagram(String word, List<String> tests) {
+    public static List<String> filterAnagram(String word, List<String> tests) {
         var wordMap = getCharMap(word);
-        return tests.stream().filter(test->(getCharMap(test)).equals(wordMap)).toList();
+        return tests.stream().filter(test -> (getCharMap(test)).equals(wordMap)).toList();
     }
 
     private static Map<Character, Integer> getCharMap(String word) {
         Map<Character, Integer> map = new TreeMap<>();
-        for(char c : word.toLowerCase().toCharArray()) {
+        for (char c : word.toLowerCase().toCharArray()) {
             map.put(c, map.getOrDefault(c, 0) + 1);
         }
         return map;
     }
+
     //______________________________________________________________________________________________________________|
     //                                             Hexlet Solution                                                  |
     private static String normalize(String word) {
@@ -102,5 +106,58 @@ public class HM2Streams {
         return words.stream()
                 .filter(item -> normalize(item).equals(normalizedWord))
                 .toList();
+    }
+    //**************************************************************************************************************|
+    //                                   Convert color from hex string to rgb and back                              |
+    //______________________________________________________________________________________________________________|
+    //                                                 My Solution                                                  |
+    public static String rgbToHex(int r, int g, int b) {
+        var R = Integer.toHexString(r);
+        var G = Integer.toHexString(g);
+        var B = Integer.toHexString(b);
+        if (R.length() < 2) R = "0" + R;
+        if (G.length() < 2) G = "0" + G;
+        if (B.length() < 2) B = "0" + B;
+        return "#" + R + G + B;
+    }
+
+    public static Map<String, Integer> hexToRgb(String hex) {
+        var symbols = hex.split("");
+        int R = 0, G = 0, B = 0;
+        R = Integer.parseInt(symbols[1] + symbols[2], 16);
+        G = Integer.parseInt(symbols[3] + symbols[4], 16);
+        B = Integer.parseInt(symbols[5] + symbols[6], 16);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("b", B);
+        map.put("g", G);
+        map.put("r", R);
+        return map;
+    }
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    public static String HEXLET_rgbToHex(int r, int g, int b) {
+        var hex = Stream.of(r, g, b)
+                .map(channel -> Integer.toString(channel, 16))
+                .map(channel -> StringUtils.leftPad(channel, 2, "0"))
+                .collect(Collectors.joining(""));
+
+        return String.format("#%s", hex);
+
+    }
+
+    public static Map<String, Integer> HEXLET_hexToRgb(String hex) {
+        // Util.chunk(hex.substring(1), 2);
+        // But Util is hexlet custom class,
+        // So ...
+        String[] chunked = {};
+        List<Integer> channels = Stream.of(chunked)
+                .map(channel -> Integer.parseInt(channel, 16))
+                .toList();
+
+        return Map.of(
+                "r", channels.get(0),
+                "g", channels.get(1),
+                "b", channels.get(2)
+        );
     }
 }
