@@ -1,11 +1,10 @@
 package org.anton.hexlet.module2.streams;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.Math.abs;
 
@@ -74,5 +73,34 @@ public class HM2Streams {
         var minDiff = diffs.stream().mapToInt(Integer::intValue).min().getAsInt();
         return diffs.indexOf(minDiff);
     }
+    //**************************************************************************************************************|
+    //                                   Find anagrams of string in list of strings                                 |
+    //______________________________________________________________________________________________________________|
+    //                                                 My Solution                                                  |
+    public static List<String>filterAnagram(String word, List<String> tests) {
+        var wordMap = getCharMap(word);
+        return tests.stream().filter(test->(getCharMap(test)).equals(wordMap)).toList();
+    }
 
+    private static Map<Character, Integer> getCharMap(String word) {
+        Map<Character, Integer> map = new TreeMap<>();
+        for(char c : word.toLowerCase().toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        return map;
+    }
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    private static String normalize(String word) {
+        return Stream.of(word.split(""))
+                .sorted()
+                .collect(Collectors.joining(""));
+    }
+
+    public static List<String> HEXLET_filterAnagram(String word, List<String> words) {
+        var normalizedWord = normalize(word);
+        return words.stream()
+                .filter(item -> normalize(item).equals(normalizedWord))
+                .toList();
+    }
 }
