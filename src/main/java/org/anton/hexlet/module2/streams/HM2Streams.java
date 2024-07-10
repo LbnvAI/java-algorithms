@@ -107,6 +107,7 @@ public class HM2Streams {
                 .filter(item -> normalize(item).equals(normalizedWord))
                 .toList();
     }
+
     //**************************************************************************************************************|
     //                                   Convert color from hex string to rgb and back                              |
     //______________________________________________________________________________________________________________|
@@ -133,6 +134,7 @@ public class HM2Streams {
         map.put("r", R);
         return map;
     }
+
     //______________________________________________________________________________________________________________|
     //                                             Hexlet Solution                                                  |
     public static String HEXLET_rgbToHex(int r, int g, int b) {
@@ -146,18 +148,53 @@ public class HM2Streams {
     }
 
     public static Map<String, Integer> HEXLET_hexToRgb(String hex) {
-        // Util.chunk(hex.substring(1), 2);
-        // But Util is hexlet custom class,
-        // So ...
-        String[] chunked = {};
+        String[] chunked = Util.chunk(hex.substring(1), 2);
         List<Integer> channels = Stream.of(chunked)
                 .map(channel -> Integer.parseInt(channel, 16))
                 .toList();
-
         return Map.of(
                 "r", channels.get(0),
                 "g", channels.get(1),
                 "b", channels.get(2)
         );
+    }
+    //**************************************************************************************************************|
+    //                             Convert ip from string to 32bit number(decimal) anb back                         |
+    //______________________________________________________________________________________________________________|
+    //                                                 My Solution                                                  |
+    public static long ipToDec(String ip) {
+        String result = Stream.of(ip.split("\\."))
+                .map(Integer::parseInt)
+                .map(Integer::toBinaryString)
+                .map(str -> StringUtils.leftPad(str, 8, "0"))
+                .reduce("", String::concat);
+        return Long.parseLong(result, 2);
+    }
+
+    public static String decToIp(long ip) {
+        return Stream.of(Util.chunk(StringUtils.leftPad(Long.toBinaryString(ip), 32, "0"), 8))
+                .map(chunk -> Integer.parseInt(chunk, 2))
+                .map(chunk -> Integer.toString(chunk))
+                .collect(Collectors.joining("."));
+    }
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    public static long HEXLET_ipToDec(String ip) {
+        var ipInHex = Stream.of(ip.split("\\."))
+                .map(octet -> Integer.parseInt(octet))
+                .map(octet -> Integer.toString(octet, 16))
+                .map(octet -> StringUtils.leftPad(octet, 2, "0"))
+                .collect(Collectors.joining(""));
+
+        return Long.parseLong(ipInHex, 16);
+    }
+
+    public static String HEXLET_decToIp(long decimal) {
+        var ipInHex = Long.toString(decimal, 16);
+        var normalizedIp = StringUtils.leftPad(ipInHex, 8, "0");
+        return Stream.of(Util.chunk(normalizedIp, 2))
+                .map(octet -> Integer.parseInt(octet, 16))
+                .map(octet -> Integer.toString(octet))
+                .collect(Collectors.joining("."));
     }
 }
