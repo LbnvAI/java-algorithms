@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.lang.Math.abs;
@@ -158,6 +159,7 @@ public class HM2Streams {
                 "b", channels.get(2)
         );
     }
+
     //**************************************************************************************************************|
     //                             Convert ip from string to 32bit number(decimal) anb back                         |
     //______________________________________________________________________________________________________________|
@@ -177,6 +179,7 @@ public class HM2Streams {
                 .map(chunk -> Integer.toString(chunk))
                 .collect(Collectors.joining("."));
     }
+
     //______________________________________________________________________________________________________________|
     //                                             Hexlet Solution                                                  |
     public static long HEXLET_ipToDec(String ip) {
@@ -196,5 +199,66 @@ public class HM2Streams {
                 .map(octet -> Integer.parseInt(octet, 16))
                 .map(octet -> Integer.toString(octet))
                 .collect(Collectors.joining("."));
+    }
+
+//    public static String nrzi(String signals) {
+//
+//    }
+
+    //**************************************************************************************************************|
+    //                                   Count probabilities for next cube roll                                     |
+    //______________________________________________________________________________________________________________|
+    //                                                 My Solution                                                  |
+    public static Map<Integer, Map<Integer, Double>> calculateProbabilities(List<Integer> values) {
+        Map<Integer, Map<Integer, Double>> result = new HashMap<>();
+        Map<Integer, List<Integer>> nextValues = new HashMap<>();
+        for (int i = 0; i < values.size(); i++) {
+            List<Integer> next = nextValues.getOrDefault(values.get(i), new ArrayList<>());
+            if (i != values.size() - 1) next.add(values.get(i + 1));
+            nextValues.put(values.get(i), next);
+        }
+        for (var entry : nextValues.entrySet()) {
+            result.put(entry.getKey(), getProbFromList(entry.getValue()));
+        }
+        return result;
+    }
+
+    private static Map<Integer, Double> getProbFromList(List<Integer> values) {
+        Map<Integer, Double> result = new HashMap<>();
+        var counter = values.stream().collect(Collectors.groupingBy(value -> value, Collectors.counting()));
+        for (int value : values) {
+            result.put(value, 1.0 / values.size() * counter.get(value));
+        }
+        return result;
+    }
+
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    private static long countElements(List<Integer> elements, int element) {
+        return elements.stream()
+                .filter(currentElement -> currentElement == element)
+                .count();
+    }
+
+    private static Map<Integer, Double> findProbabilityForElement(List<Integer> elements, int element) {
+        List<Integer> filtered = IntStream.range(1, elements.size())
+                .filter(index -> elements.get(index - 1) == element)
+                .mapToObj(i -> elements.get(i))
+                .toList();
+        return filtered.stream()
+                .distinct()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        current -> (double) countElements(filtered, current) / filtered.size()
+                ));
+    }
+
+    public static Map<Integer, Map<Integer, Double>> HEXLET_calculateProbabilities(List<Integer> droppedNumbers) {
+        return droppedNumbers.stream()
+                .distinct()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        current -> findProbabilityForElement(droppedNumbers, current)
+                ));
     }
 }
