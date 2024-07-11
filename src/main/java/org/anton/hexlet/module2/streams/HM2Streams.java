@@ -2,8 +2,6 @@ package org.anton.hexlet.module2.streams;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
@@ -202,10 +200,38 @@ public class HM2Streams {
                 .map(octet -> Integer.toString(octet))
                 .collect(Collectors.joining("."));
     }
-
-//    public static String nrzi(String signals) {
-//
-//    }
+    //**************************************************************************************************************|
+    //                                       Get binary code from NRZI signals                                      |
+    //______________________________________________________________________________________________________________|
+    //                                   My Solution (need to rewrite using streams                                 |
+    public static String nrzi(String signals) {
+        StringBuilder result = new StringBuilder();
+        var sig = new ArrayList<Character>();
+        for (int i = 0; i < signals.length(); i++) {
+            if (signals.charAt(i) != 124) sig.add(signals.charAt(i));
+        }
+        for (int i = 0; i < sig.size(); i++) {
+            if (i == 0 && signals.charAt(0) == 124) result.append("1");
+            else if (i == 0) result.append("0");
+            else {
+                if ((int) sig.get(i) != (int) sig.get(i - 1)) result.append("1");
+                else result.append("0");
+            }
+        }
+        return result.toString();
+    }
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    public static String HEXLET_nrzi(String signal) {
+        return IntStream.range(0, signal.length())
+                .mapToObj(index -> {
+                    if (signal.charAt(index) == '|') {
+                        return "";
+                    }
+                    return (index != 0 && signal.charAt(index - 1) == '|') ? "1" : "0";
+                })
+                .collect(Collectors.joining(""));
+    }
 
     //**************************************************************************************************************|
     //                                   Count probabilities for next cube roll                                     |
@@ -270,6 +296,7 @@ public class HM2Streams {
     //                                         My Solution same as Hexlet                                           |
 
     // var content = Files.readString(Path.of("src/main/resources/s2.conf"));
+
     public static String getForwardedVariables(String content) {
         // Создаем поток строк, разделяя исходную по символу переноса строки
         return Stream.of(content.split("\r\n")) // "\r\n" для Windows Line Separator
