@@ -2,6 +2,8 @@ package org.anton.hexlet.module2.streams;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
@@ -260,5 +262,31 @@ public class HM2Streams {
                         Function.identity(),
                         current -> findProbabilityForElement(droppedNumbers, current)
                 ));
+    }
+
+    //**************************************************************************************************************|
+    //                                        Find variables in conf file                                           |
+    //______________________________________________________________________________________________________________|
+    //                                         My Solution same as Hexlet                                           |
+
+    // var content = Files.readString(Path.of("src/main/resources/s2.conf"));
+    public static String getForwardedVariables(String content) {
+        // Создаем поток строк, разделяя исходную по символу переноса строки
+        return Stream.of(content.split("\r\n")) // "\r\n" для Windows Line Separator
+                // Фильтруем те, которые начинаются с "environment"
+                .filter(line -> line.startsWith("environment"))
+                // Удаляем "environment" и двойные кавычки из каждой строки
+                .map(line -> line.substring(13, line.length() - 1))
+                // Создаем поток из массива строк, элементы массива - строки, разделенные запятой,
+                // Чтобы каждая переменная была представлена своей строкой
+                .map(line -> line.split(","))
+                // Соединяем все обратно в поток строк
+                .flatMap(Arrays::stream)
+                // Удаляем из потока, строки, не начинающиеся с "X_FORWARDED_"
+                .filter(line -> line.startsWith("X_FORWARDED_"))
+                // Удаляем из каждой строки "X_FORWARDED_"
+                .map(line -> line.substring(12))
+                // Собираем все в одну строку с разделителем в виде запятой
+                .collect(Collectors.joining(","));
     }
 }
