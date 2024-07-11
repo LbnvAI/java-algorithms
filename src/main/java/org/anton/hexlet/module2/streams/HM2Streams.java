@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -200,6 +201,7 @@ public class HM2Streams {
                 .map(octet -> Integer.toString(octet))
                 .collect(Collectors.joining("."));
     }
+
     //**************************************************************************************************************|
     //                                       Get binary code from NRZI signals                                      |
     //______________________________________________________________________________________________________________|
@@ -220,6 +222,7 @@ public class HM2Streams {
         }
         return result.toString();
     }
+
     //______________________________________________________________________________________________________________|
     //                                             Hexlet Solution                                                  |
     public static String HEXLET_nrzi(String signal) {
@@ -315,5 +318,32 @@ public class HM2Streams {
                 .map(line -> line.substring(12))
                 // Собираем все в одну строку с разделителем в виде запятой
                 .collect(Collectors.joining(","));
+    }
+    //**************************************************************************************************************|
+    //                                     Create a histogram for dice rolls                                        |
+    //______________________________________________________________________________________________________________|
+    //                                               My Solution                                                    |
+    public static void play(int rolls, Supplier<Integer> sp) {
+        var resultMap = Stream.generate(sp).limit(rolls).collect(Collectors.groupingBy(item -> item, Collectors.counting()));
+        List<String> result = new ArrayList<>();
+        for (int i = 1; i <= 6; i++) {
+            String value = "";
+            if (resultMap.containsKey(i)) value = " " + resultMap.get(i).toString();
+            result.add(i + "|" + "#".repeat(resultMap.getOrDefault(i, 0L).intValue()) + value);
+        }
+        System.out.println(String.join("\n", result));
+    }
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    public static void HEXLET_play(int roundsCount, Supplier rollDice) {
+        var barItem = "#";
+        List<Integer> numbers = Stream.generate(rollDice).limit(roundsCount).toList();
+        var histogram = IntStream.rangeClosed(1, 6).boxed().map(side -> {
+            var count = (int) numbers.stream().filter(number -> number == side).count();
+            var displayCount = count != 0 ? " " + count : "";
+            var bar = barItem.repeat(count);
+            return String.format("%s|%s%s", side, bar, displayCount);
+        }).collect(Collectors.joining("\n"));
+        System.out.println(histogram);
     }
 }
