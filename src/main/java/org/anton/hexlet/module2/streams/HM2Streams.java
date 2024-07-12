@@ -1,6 +1,7 @@
 package org.anton.hexlet.module2.streams;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -319,6 +320,7 @@ public class HM2Streams {
                 // Собираем все в одну строку с разделителем в виде запятой
                 .collect(Collectors.joining(","));
     }
+
     //**************************************************************************************************************|
     //                                     Create a histogram for dice rolls                                        |
     //______________________________________________________________________________________________________________|
@@ -333,6 +335,7 @@ public class HM2Streams {
         }
         System.out.println(String.join("\n", result));
     }
+
     //______________________________________________________________________________________________________________|
     //                                             Hexlet Solution                                                  |
     public static void HEXLET_play(int roundsCount, Supplier rollDice) {
@@ -345,5 +348,54 @@ public class HM2Streams {
             return String.format("%s|%s%s", side, bar, displayCount);
         }).collect(Collectors.joining("\n"));
         System.out.println(histogram);
+    }
+
+    //**************************************************************************************************************|
+    //                                             Ipv6 Validation                                                  |
+    //______________________________________________________________________________________________________________|
+    //                                               My Solution                                                    |
+    public static boolean isValidIPv6(String IPV6) {
+        String validSymbols = "0123456789abcdef:";
+        int symbolsCheck = (int) Stream.of(IPV6.split("")).map(String::toLowerCase).filter(validSymbols::contains).count();
+        if (symbolsCheck != IPV6.length()) return false;
+        int dubDubDot = 0;
+        for (int i = 0; i < IPV6.length() - 1; i++) {
+            if (IPV6.charAt(i) == ':' && IPV6.charAt(i + 1) == ':') dubDubDot++;
+        }
+        List<String> groupCheck = List.of(IPV6.split(":"));
+        for (String group : groupCheck) {
+            if (group.length() > 4) return false;
+        }
+        if (dubDubDot > 1) return false;
+        if (!IPV6.contains(":")) return false;
+        if (IPV6.charAt(IPV6.length() - 1) == ':' && IPV6.charAt(IPV6.length() - 2) != ':') return false;
+        if (IPV6.charAt(0) == ':' && IPV6.charAt(1) != ':') return false;
+        if (groupCheck.size() > 8) return false;
+        return dubDubDot == 0 || groupCheck.size() <= 7;
+    }
+
+    //______________________________________________________________________________________________________________|
+    //                                             Hexlet Solution                                                  |
+    private static boolean isValidGroup(String group) {
+        var hexadecimal = "0x" + group;
+        return NumberUtils.isCreatable(hexadecimal)
+                && group.length() <= 4;
+    }
+
+    public static boolean HEXLET_isValidIPv6(String ip) {
+        if (ip.indexOf("::") != ip.lastIndexOf("::")) {
+            return false;
+        }
+        var isShort = ip.contains("::");
+        List<String> groups = Stream.of(ip.split("::"))
+                .filter(group -> group != "")
+                .flatMap(group -> Stream.of(group.split(":", -1)))
+                .toList();
+
+        var length = isShort ? groups.size() + 2 : groups.size();
+        if ((!isShort && length < 8) || length > 8) {
+            return false;
+        }
+        return groups.stream().allMatch(HM2Streams::isValidGroup);
     }
 }
