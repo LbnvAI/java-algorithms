@@ -1,4 +1,4 @@
-package org.anton.hexlet.module4.cars_users;
+package org.anton.hexlet.module4.cars_service;
 
 import lombok.Getter;
 import lombok.Setter;

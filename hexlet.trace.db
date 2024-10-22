@@ -1,0 +1,6 @@
+2024-10-22 17:43:55 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "SONGS" not found (this database is empty); SQL statement:
+SELECT * FROM songs WHERE LOWER(title) LIKE LOWER(CONCAT('%', ?, '%')) [42104-220]
+2024-10-22 18:10:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "SONGS" not found (this database is empty); SQL statement:
+SELECT * FROM songs WHERE LOWER(title) LIKE LOWER(%?%) [42104-220]
