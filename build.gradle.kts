@@ -27,6 +27,7 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.14.0")
     // Apache:common-collections4
     implementation("org.apache.commons:commons-collections4:4.5.0-M2")
+    implementation("com.h2database:h2:2.2.220")
 }
 
 tasks.test {
